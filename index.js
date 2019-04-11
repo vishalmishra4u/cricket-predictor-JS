@@ -1,19 +1,30 @@
-const rp = require('request-promise');
-const cheerio = require('cheerio');
-const table = require('cli-table');
+var express = require('express');
+var fs = require('fs');
+var request = require('request');
+var cheerio = require('cheerio');
+var app = express();
 
-let players = [];
+app.get('/getPlayers', function(req, res){
+    url = 'http://www.howstat.com/cricket/Statistics/Players/PlayerCountryList.asp?Country=IND';
 
-const options = {
-  url : `https://www.freecodecamp.org/forum/directory_items?period=weekly&order=likes_received&_=1552311933431`,
-  json : true
-};
+    request(url, function(error, response, html){
 
-rp(options)
-  .then((data) => {
-    let userData = [];
-    for(let user of data.directory_items){
-      userData.push({name : user.user.username,likes_received : user.likes_received});
-    }
-    process.stdout.write('loading');
-  });
+        // First we'll check to make sure no errors occurred when making the request
+
+        if(!error){
+            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+
+            var $ = cheerio.load(html);
+
+            // Finally, we'll define the variables we're going to capture
+
+            var title, release, rating;
+            var ODIjson = { matches : "", runs : "", battingAvg : "", wkts : "", bowlAvg : ""};
+            var testJson = { matches : "", runs : "", battingAvg : "", wkts : "", bowlAvg : ""};
+            var t20Json = { matches : "", runs : "", battingAvg : "", wkts : "", bowlAvg : ""};
+        }
+    });
+});
+
+app.listen('8081')
+exports = module.exports = app;
