@@ -46,19 +46,20 @@ app.get('/getPlayers', function(req, res) {
         player: $(element).find('td:nth-of-type(1)').text().trim(),
         numberTestMatches: $(element).find('td:nth-of-type(2)').text().trim(),
         testRuns: $(element).find('td:nth-of-type(3)').text().trim()
-      })).get()
-      console.log("-------------", JSON.stringify(result[0].player));
+      })).get();
 
-      // We will repeat the same process as above.  This time we notice that the release is located within the last element.
-      // Writing this code will move us to the exact location of the release year.
+      var data = [];
+      // data.push(JSON.stringify(result[0].player).replace(/\\n/g, '\n'));
+      // data.push(JSON.stringify(result[0].numberTestMatches).replace(/\\n/g, '\n'));
 
-      // release = data.children().last().children().text();
+      var players = JSON.stringify(result[0].player).replace(/\\n/g, '\n');
+      players = players.replace(/\s\s+/g, ' ');
 
-      // json.title = title;
+      fs.writeFile('output.json', data, function(err) {
 
-      // Once again, once we have the data extract it we'll save it to our json object
+        console.log('File successfully written!');
 
-      // json.release = release;
+      });
     }
   });
 });
